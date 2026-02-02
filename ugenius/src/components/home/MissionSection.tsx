@@ -97,13 +97,10 @@ const MissionSection = () => {
               "
             </div>
             <p className="font-display text-2xl md:text-3xl text-foreground italic leading-relaxed relative z-10">
-              Excellence is not a destination but a continuous journey of self-improvement 
-              and dedication.
+              Diligence is the effort needed to avoid negligence, all failures are as a result of human carelessness.
             </p>
             <footer className="mt-6">
-              <span className="text-gold font-semibold">Dr. Isaiah Macwealth</span>
-              <span className="text-muted-foreground"> — Creator of Auto-Bio Jacking</span>
-            </footer>
+              <span className="text-gold font-semibold">Dr. Isaiah Macwealth</span>            </footer>
           </blockquote>
         </div>
       </div>
