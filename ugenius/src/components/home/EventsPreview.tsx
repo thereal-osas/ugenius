@@ -1,9 +1,55 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Calendar, Clock, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import type  { Event } from "@/lib/api";
+
+// Helper function to create placeholder events (called once outside render)
+const createPlaceholderEvents = (): Event[] => {
+  const now = Date.now();
+  return [
+    {
+      id: '1',
+      title: 'Academic Excellence Workshop',
+      description: 'Join us for an intensive workshop on study techniques, time management, and exam preparation strategies.',
+      type: 'workshop' as const,
+      status: 'upcoming' as const,
+      start_time: new Date(now + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      end_time: new Date(now + 7 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
+      location: 'Online',
+      image_url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=400&fit=crop&q=80',
+      is_featured: true,
+      created_at: new Date(now).toISOString(),
+    },
+    {
+      id: '2',
+      title: 'First Class Achievers Seminar',
+      description: 'Hear from students who achieved first-class honors and learn their secrets to academic success.',
+      type: 'seminar' as const,
+      status: 'upcoming' as const,
+      start_time: new Date(now + 14 * 24 * 60 * 60 * 1000).toISOString(),
+      end_time: new Date(now + 14 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+      location: 'Online',
+      image_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=400&fit=crop&q=80',
+      is_featured: true,
+      created_at: new Date(now).toISOString(),
+    },
+    {
+      id: '3',
+      title: 'Study Group Networking Meetup',
+      description: 'Connect with fellow U-Genius members, form study groups, and build lasting academic partnerships.',
+      type: 'meetup' as const,
+      status: 'upcoming' as const,
+      start_time: new Date(now + 21 * 24 * 60 * 60 * 1000).toISOString(),
+      end_time: new Date(now + 21 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+      location: 'Online',
+      image_url: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&h=400&fit=crop&q=80',
+      is_featured: true,
+      created_at: new Date(now).toISOString(),
+    },
+  ];
+};
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -87,7 +133,9 @@ const EventCard = ({ event }: { event: Event }) => (
 
 const EventsPreview = () => {
   const [events, setEvents] = useState<Event[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+
+  // Memoize placeholder events to avoid recreating on each render
+  const placeholderEvents = useMemo(() => createPlaceholderEvents(), []);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -98,8 +146,6 @@ const EventsPreview = () => {
         }
       } catch (error) {
         console.error('Failed to fetch events:', error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -107,47 +153,7 @@ const EventsPreview = () => {
   }, []);
 
   // Show placeholder events if no events from API
-  const displayEvents = events.length > 0 ? events : [
-    {
-      id: '1',
-      title: 'Academic Excellence Workshop',
-      description: 'Join us for an intensive workshop on study techniques, time management, and exam preparation strategies.',
-      type: 'workshop' as const,
-      status: 'upcoming' as const,
-      start_time: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-      end_time: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
-      location: 'Online',
-      image_url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=400&fit=crop&q=80',
-      is_featured: true,
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '2',
-      title: 'First Class Achievers Seminar',
-      description: 'Hear from students who achieved first-class honors and learn their secrets to academic success.',
-      type: 'seminar' as const,
-      status: 'upcoming' as const,
-      start_time: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-      end_time: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
-      location: 'Online',
-      image_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=400&fit=crop&q=80',
-      is_featured: true,
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '3',
-      title: 'Study Group Networking Meetup',
-      description: 'Connect with fellow U-Genius members, form study groups, and build lasting academic partnerships.',
-      type: 'meetup' as const,
-      status: 'upcoming' as const,
-      start_time: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000).toISOString(),
-      end_time: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
-      location: 'Online',
-      image_url: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&h=400&fit=crop&q=80',
-      is_featured: true,
-      created_at: new Date().toISOString(),
-    },
-  ];
+  const displayEvents = events.length > 0 ? events : placeholderEvents;
 
   return (
     <section className="py-24 bg-background">
