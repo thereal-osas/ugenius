@@ -60,19 +60,19 @@ const Footer = () => {
             <h4 className="font-display text-lg font-semibold mb-4">Resources</h4>
             <ul className="space-y-3">
               {[
-                "Study Materials",
-                "Video Tutorials",
-                "PDF Guides",
-                "Mentorship Program",
-                "FAQs",
-              ].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
+                { name: "Study Materials", path: "/resources" },
+                { name: "Video Tutorials", path: "/resources" },
+                { name: "PDF Guides", path: "/resources" },
+                { name: "Mentorship Program", path: "/benefits" },
+                { name: "FAQs", path: "/contact" },
+              ].map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
                     className="text-primary-foreground/70 hover:text-gold transition-colors duration-300 text-sm"
                   >
-                    {item}
-                  </a>
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
