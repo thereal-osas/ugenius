@@ -9,8 +9,6 @@ import {
   Lightbulb,
   Award,
   Calendar,
-  FileText,
-  Video,
   ArrowRight,
 } from "lucide-react";
 
@@ -40,22 +38,10 @@ const benefits = [
     highlights: ["Leadership training", "Time management", "Communication skills"],
   },
   {
-    icon: Video,
-    title: "Video Tutorials",
-    description: "Learn at your own pace with our extensive library of video tutorials covering difficult topics across various disciplines.",
-    highlights: ["HD quality videos", "Expert instructors", "Interactive quizzes"],
-  },
-  {
     icon: Calendar,
     title: "Events & Workshops",
     description: "Participate in regular seminars, workshops, and academic events designed to enhance your knowledge and networking opportunities.",
     highlights: ["Weekly seminars", "Study groups", "Academic conferences"],
-  },
-  {
-    icon: FileText,
-    title: "PDF Resources",
-    description: "Download comprehensive PDF guides, e-books, and study materials that you can access offline anytime, anywhere.",
-    highlights: ["E-books library", "Study guides", "Research papers"],
   },
   {
     icon: Award,

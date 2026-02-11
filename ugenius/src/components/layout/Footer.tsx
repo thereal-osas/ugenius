@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import {  Mail, MapPin, Phone } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -19,17 +19,7 @@ const Footer = () => {
             <p className="text-primary-foreground/80 text-sm leading-relaxed">
               Empowering students to achieve academic excellence through the transformative Auto-Bio Jacking system.
             </p>
-            <div className="flex gap-3">
-              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-gold hover:text-primary transition-all duration-300"
-                >
-                  <Icon size={18} />
-                </a>
-              ))}
-            </div>
+           
           </div>
 
           {/* Quick Links */}
@@ -85,25 +75,24 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-gold mt-0.5 shrink-0" />
                 <span className="text-primary-foreground/70 text-sm">
-                  Student Center, Main Campus<br />University Avenue
-                </span>
+                  Plot 11A-C Kudirat Abiola Way Alausa <br />Ikeja, Lagos, Nigeria                </span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-gold shrink-0" />
                 <a
-                  href="mailto:info@ugenius.club"
+                  href="mailto:ugeniusclub@gmail.com"
                   className="text-primary-foreground/70 hover:text-gold transition-colors duration-300 text-sm"
                 >
-                  info@ugenius.club
+                  ugeniusclub@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-gold shrink-0" />
                 <a
-                  href="tel:+1234567890"
+                  href="tel:+2347062557356"
                   className="text-primary-foreground/70 hover:text-gold transition-colors duration-300 text-sm"
                 >
-                  +123 456 7890
+                  +234 706 255 7356
                 </a>
               </li>
             </ul>
