@@ -45,7 +45,7 @@ const slides = [
 
 export default function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isAutoPlaying,] = useState(true);
 
   useEffect(() => {
     if (!isAutoPlaying) return;
