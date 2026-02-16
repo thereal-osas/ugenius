@@ -35,15 +35,15 @@ func NewAuthService(db *gorm.DB, cfg *config.Config, emailService *EmailService)
 }
 
 type RegisterInput struct {
-	Email       string `json:"email" binding:"required,email"`
-	Password    string `json:"password" binding:"required,min=8"`
-	FirstName   string `json:"first_name" binding:"required"`
-	LastName    string `json:"last_name" binding:"required"`
-	Phone       string `json:"phone"`
-	CampusID    string `json:"campus_id" binding:"required"`
-	Institution string `json:"institution"`
-	Department  string `json:"department"`
-	Level       string `json:"level"`
+	Email       string  `json:"email" binding:"required,email"`
+	Password    string  `json:"password" binding:"required,min=8"`
+	FirstName   string  `json:"first_name" binding:"required"`
+	LastName    string  `json:"last_name" binding:"required"`
+	Phone       string  `json:"phone"`
+	CampusID    *string `json:"campus_id"`
+	Institution string  `json:"institution"`
+	Department  string  `json:"department"`
+	Level       string  `json:"level"`
 }
 
 type LoginInput struct {
@@ -51,22 +51,26 @@ type LoginInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func (s *AuthService) Register(input *RegisterInput) (*models.User, error) {
-	// Check if user exists
-	var existingUser models.User
-	if err := s.db.Where("email = ?", input.Email).First(&existingUser).Error; err == nil {
-		return nil, ErrUserExists
-	}
+type CreateUserInput struct {
+	Email       string
+	Password    string
+	FirstName   string
+	LastName    string
+	Phone       string
+	CampusID    *uuid.UUID
+	Institution string
+	Department  string
+	Level       string
+	Role        models.Role
+}
 
-	// Validate campus
-	campusUUID, err := uuid.Parse(input.CampusID)
-	if err != nil {
-		return nil, ErrCampusNotFound
-	}
-
-	var campus models.Campus
-	if err := s.db.First(&campus, "id = ?", campusUUID).Error; err != nil {
-		return nil, ErrCampusNotFound
+func (s *AuthService) CreateUser(input CreateUserInput) (*models.User, error) {
+	// Validate campus if provided
+	if input.CampusID != nil {
+		var campus models.Campus
+		if err := s.db.First(&campus, "id = ?", input.CampusID).Error; err != nil {
+			return nil, ErrCampusNotFound
+		}
 	}
 
 	// Hash password
@@ -82,22 +86,90 @@ func (s *AuthService) Register(input *RegisterInput) (*models.User, error) {
 		FirstName:    input.FirstName,
 		LastName:     input.LastName,
 		Phone:        input.Phone,
-		Role:         models.RoleStudent,
-		CampusID:     &campusUUID,
+		Role:         input.Role,
+		CampusID:     input.CampusID,
 		Institution:  input.Institution,
 		Department:   input.Department,
 		Level:        input.Level,
-		VerifyToken:  utils.GenerateVerificationToken(),
 	}
 
-	if err := s.db.Create(user).Error; err != nil {
+	// Generate verification token for students
+	if input.Role == models.RoleStudent {
+		user.VerifyToken = utils.GenerateVerificationToken()
+	} else {
+		user.EmailVerified = true // Admins are verified by default
+	}
+
+	if err := s.db.Create(&user).Error; err != nil {
 		return nil, err
 	}
 
-	// Send verification email
-	go s.emailService.SendVerificationEmail(user.Email, user.FirstName, user.VerifyToken)
+	// Send verification email for students
+	if input.Role == models.RoleStudent {
+		go s.emailService.SendVerificationEmail(user.Email, user.FirstName, user.VerifyToken)
+	}
 
 	return user, nil
+}
+
+func (s *AuthService) Register(input *RegisterInput) (*models.User, error) {
+	// Check if user exists
+	var existingUser models.User
+	if err := s.db.Where("email = ?", input.Email).First(&existingUser).Error; err == nil {
+		return nil, ErrUserExists
+	}
+
+	var campusUUID *uuid.UUID
+	if input.CampusID != nil && *input.CampusID != "" {
+		parsedUUID, err := uuid.Parse(*input.CampusID)
+		if err != nil {
+			return nil, ErrCampusNotFound
+		}
+		campusUUID = &parsedUUID
+	}
+
+	return s.CreateUser(CreateUserInput{
+		Email:       input.Email,
+		Password:    input.Password,
+		FirstName:   input.FirstName,
+		LastName:    input.LastName,
+		Phone:       input.Phone,
+		CampusID:    campusUUID,
+		Institution: input.Institution,
+		Department:  input.Department,
+		Level:       input.Level,
+		Role:        models.RoleStudent,
+	})
+}
+
+func (s *AuthService) RegisterAdmin(input *RegisterInput) (*models.User, error) {
+	// Check if user exists
+	var existingUser models.User
+	if err := s.db.Where("email = ?", input.Email).First(&existingUser).Error; err == nil {
+		return nil, ErrUserExists
+	}
+
+	var campusUUID *uuid.UUID
+	if input.CampusID != nil && *input.CampusID != "" {
+		parsedUUID, err := uuid.Parse(*input.CampusID)
+		if err != nil {
+			return nil, ErrCampusNotFound
+		}
+		campusUUID = &parsedUUID
+	}
+
+	return s.CreateUser(CreateUserInput{
+		Email:       input.Email,
+		Password:    input.Password,
+		FirstName:   input.FirstName,
+		LastName:    input.LastName,
+		Phone:       input.Phone,
+		CampusID:    campusUUID,
+		Institution: input.Institution,
+		Department:  input.Department,
+		Level:       input.Level,
+		Role:        models.RoleCampusAdmin,
+	})
 }
 
 func (s *AuthService) Login(input *LoginInput) (*models.User, *utils.TokenPair, error) {
@@ -168,4 +240,15 @@ func (s *AuthService) RefreshToken(refreshTokenStr string) (*models.User, *utils
 	}
 
 	return &user, tokenPair, nil
+}
+
+func (s *AuthService) FindUserByEmail(email string) (*models.User, error) {
+	var user models.User
+	if err := s.db.Where("email = ?", email).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, ErrUserNotFound
+		}
+		return nil, err
+	}
+	return &user, nil
 }

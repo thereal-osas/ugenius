@@ -1,25 +1,26 @@
 import { Target, Users, BookOpen, Award } from "lucide-react";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const features = [
   {
     icon: Target,
-    title: "Focused Excellence",
-    description: "We help students set clear academic goals and develop strategies to achieve first-class honors.",
+    title: "Cultivate Academic Excellence",
+    description: "We equip students with the knowledge, discipline, and support needed to develop strong learning habits.",
   },
   {
     icon: Users,
-    title: "Peer Community",
-    description: "Connect with like-minded students who share your passion for academic achievement.",
+    title: "Optimize Leadership Capacity",
+    description: "We nurture confident, visionary students who are prepared to lead themselves and others with purpose and integrity.",
   },
   {
     icon: BookOpen,
-    title: "Quality Resources",
-    description: "Access exclusive study materials, tutorials, and guides curated by top performers.",
+    title: "Refine Character & Personal Growth",
+    description: "We develop resilient, value-driven individuals who grow in confidence, mindset, and emotional intelligence.",
   },
   {
     icon: Award,
-    title: "Recognition",
-    description: "Earn scholarships and recognition for your academic achievements and contributions.",
+    title: "Empower Community Impact",
+    description: "We inspire students to collaborate, serve, and create meaningful change within their campuses and beyond.",
   },
 ];
 
@@ -28,11 +29,22 @@ const MissionSection = () => {
     <section className="py-24 bg-cream-dark relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-coral/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gold-100/20 via-transparent to-purple-100/20" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
+        {/* Section Header */}
+        <ScrollReveal direction="up" delay={0.2}>
+          <div className="text-center mb-16">
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
+              Our <span className="text-gradient-gold">Mission</span>
+            </h2>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Maintaing academic excellence, inspiring leadership
+            </p>
+          </div>
+        </ScrollReveal>
+
         {/* Image + Text Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
           {/* Image */}
@@ -49,60 +61,52 @@ const MissionSection = () => {
             <div className="absolute -top-4 -left-4 w-16 h-16 bg-coral/20 rounded-xl -z-10" />
           </div>
 
-          {/* Text Content */}
-          <div>
-            <span className="text-gold font-medium text-sm uppercase tracking-wider">
-              Our Mission
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-4 mb-6">
-              Empowering Academic Excellence
-            </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-              U-Genius is more than a club—it's a transformative journey designed to unlock
-              your full academic potential through the proven Auto-Bio Jacking methodology.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              We believe every student has untapped genius waiting to be discovered. Through
-              structured study habits, peer support, and expert guidance, we help you develop
-              the mindset and skills needed to excel academically.
+          {/* Text */}
+          <div className="lg:pl-16">
+      
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              We exist to raise a generation of scholars who not only succeed in the classroom, but also lead with character, vision, and impact. Our gial is to shape well-rounded individuals who are academically strong, emotionally grounded, and purpose-driven, prepared to stand out in any environment they find themselves. <br/><br/> Through tutorials, mentorship, community, and skill building initiatives, we equip students to think critically, grow confidently and influence their world positively.
             </p>
           </div>
         </div>
 
+<h3 className="font-semibold text-2xl text-center pb-8 uppercase tracking-wider">U-GENIUS <span className="text-gold font-bold">C.O.R.E</span> </h3>
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
-            <div
-              key={feature.title}
-              className="group bg-card rounded-2xl p-8 shadow-soft hover:shadow-medium transition-all duration-500 hover:-translate-y-2"
-              style={{ animationDelay: `${index * 100}ms` }}
+            <ScrollReveal 
+              key={feature.title} 
+              direction="up" 
+              delay={0.3 + index * 0.1}
+              className="group"
             >
-              <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mb-6 group-hover:bg-gold/20 group-hover:scale-110 transition-all duration-300">
-                <feature.icon className="w-7 h-7 text-gold" />
+              <div className="bg-white rounded-2xl p-8 shadow-soft hover:shadow-medium transition-all duration-300 group-hover:-translate-y-2">
+                <div className="w-16 h-16 rounded-full bg-gradient-gold flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <feature.icon className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-4">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
 
         {/* Quote */}
-        <div className="mt-20 max-w-3xl mx-auto text-center">
-          <blockquote className="relative">
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-8xl text-gold/20 font-display">
-              "
-            </div>
-            <p className="font-display text-2xl md:text-3xl text-foreground italic leading-relaxed relative z-10">
-              Diligence is the effort needed to avoid negligence, all failures are as a result of human carelessness.
-            </p>
-            <footer className="mt-6">
-              <span className="text-gold font-semibold">Dr. Isaiah Macwealth</span>            </footer>
-          </blockquote>
-        </div>
+        <ScrollReveal direction="up" delay={0.8}>
+          <div className="mt-20 max-w-3xl mx-auto text-center">
+            <blockquote className="relative">
+             
+              <p className="font-display text-2xl md:text-3xl text-foreground italic leading-relaxed relative z-10">
+                "We are what we repeatedly do. Excellence, then, is not an act, but a habit."
+              </p>
+             
+            </blockquote>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

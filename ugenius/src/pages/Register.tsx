@@ -16,6 +16,7 @@ export default function Register() {
     first_name: '',
     last_name: '',
     campus_id: '',
+    institution: '',
   });
   const [campuses, setCampuses] = useState<Campus[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,6 +72,7 @@ export default function Register() {
         first_name: formData.first_name,
         last_name: formData.last_name,
         campus_id: formData.campus_id || undefined,
+        institution: formData.institution || undefined,
       });
       toast({
         title: 'Registration successful!',
@@ -154,6 +156,23 @@ export default function Register() {
               </select>
             </div>
 
+            {!formData.campus_id && (
+              <div className="space-y-2">
+                <Label htmlFor="institution">Institution (If no campus selected)</Label>
+                <Input
+                  id="institution"
+                  name="institution"
+                  type="text"
+                  placeholder="e.g., University of Lagos"
+                  value={formData.institution}
+                  onChange={handleChange}
+                />
+                <p className="text-sm text-gray-500">
+                  Please provide your institution name if your campus is not listed above.
+                </p>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -190,6 +209,12 @@ export default function Register() {
               Already have an account?{' '}
               <Link to="/login" className="text-gold-600 hover:text-gold-700 font-medium">
                 Sign in
+              </Link>
+            </p>
+            <p className="text-gray-600 mt-2">
+              Are you an administrator?{' '}
+              <Link to="/admin/login" className="text-gold-600 hover:text-gold-700 font-medium">
+                Admin Login
               </Link>
             </p>
           </div>

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Mail, Bell, Home } from "lucide-react";
+import { CheckCircle, Home } from "lucide-react";
 
 const ThankYou = () => {
   return (
@@ -29,42 +29,13 @@ const ThankYou = () => {
 
               {/* Description */}
               <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                You've successfully joined the U-Genius waitlist. We're thrilled to have you 
+                You've successfully joined the U-Genius club. We're thrilled to have you 
                 on board as we prepare to launch something truly amazing for students like you.
               </p>
 
               {/* What's Next Section */}
-              <div className="bg-card rounded-2xl p-8 mb-8 shadow-soft text-left">
-                <h2 className="font-display text-xl font-semibold text-foreground mb-6 text-center">
-                  What Happens Next?
-                </h2>
+            
                 
-                <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-5 h-5 text-gold" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-foreground">Check Your Email</h3>
-                      <p className="text-sm text-muted-foreground">
-                        You'll receive a confirmation email shortly with more details about U-Genius.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
-                      <Bell className="w-5 h-5 text-gold" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-foreground">Stay Tuned</h3>
-                      <p className="text-sm text-muted-foreground">
-                        We'll notify you when U-Genius launches at your campus with exclusive early access benefits.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               {/* CTA */}
               <Link to="/">

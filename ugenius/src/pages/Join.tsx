@@ -38,7 +38,8 @@ const Join = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [campuses, setCampuses] = useState<Campus[]>([]);
   const [formData, setFormData] = useState({
-    full_name: "",
+    first_name: "",
+    last_name: "",
     email: "",
     phone: "",
     campus_id: "",
@@ -76,12 +77,22 @@ const Join = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${API_URL}/waitlist`, {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: formData.email,
+          password: "defaultPassword123!", // Default password for students
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          phone: formData.phone,
+          campus_id: formData.campus_id || undefined,
+          institution: "U-Genius Platform",
+          department: formData.department,
+          level: formData.level,
+        }),
       });
 
       const data = await response.json();
@@ -92,13 +103,13 @@ const Join = () => {
       } else if (response.status === 409) {
         toast({
           title: "Already Registered",
-          description: data.error || "This email is already on our waitlist.",
+          description: data.message || "This email is already registered.",
           variant: "destructive",
         });
       } else {
         toast({
           title: "Registration Failed",
-          description: data.error || "Something went wrong. Please try again.",
+          description: data.message || "Something went wrong. Please try again.",
           variant: "destructive",
         });
       }
@@ -125,9 +136,9 @@ const Join = () => {
 
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                 {/* Left Column - Info */}
-                <div>
+                <div className="flex flex-col justify-center">
                   <span className="text-gold font-medium text-sm uppercase tracking-wider">
                     Join U-Genius
                   </span>
@@ -158,16 +169,30 @@ const Join = () => {
                   </h2>
 
                   <form onSubmit={handleSubmit} className="space-y-5">
-                    {/* Full Name */}
+                    {/* First Name */}
                     <div className="space-y-2">
-                      <Label htmlFor="full_name">Full Name *</Label>
+                      <Label htmlFor="first_name">First Name *</Label>
                       <Input
-                        id="full_name"
-                        name="full_name"
-                        value={formData.full_name}
+                        id="first_name"
+                        name="first_name"
+                        value={formData.first_name}
                         onChange={handleChange}
                         required
-                        placeholder="John Doe"
+                        placeholder="John"
+                        className="bg-background"
+                      />
+                    </div>
+
+                    {/* Last Name */}
+                    <div className="space-y-2">
+                      <Label htmlFor="last_name">Last Name *</Label>
+                      <Input
+                        id="last_name"
+                        name="last_name"
+                        value={formData.last_name}
+                        onChange={handleChange}
+                        required
+                        placeholder="Doe"
                         className="bg-background"
                       />
                     </div>

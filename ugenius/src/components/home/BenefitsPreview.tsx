@@ -18,13 +18,13 @@ const benefits = [
   {
     icon: Users2,
     title: "Mentorship",
-    description: "Connect with experienced mentors who've achieved academic excellence in their fields.",
+    description: "Connect with experienced mentors and high-flyers who've achieved excellence in their fields.",
     color: "navy",
   },
   {
     icon: Lightbulb,
     title: "Skill Acquisition",
-    description: "Develop essential skills beyond academics including leadership and time management.",
+    description: "Develop essential skills beyond academics including technical and digital skills.",
     color: "gold",
   },
 ];

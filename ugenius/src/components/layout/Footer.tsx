@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import {  Mail, MapPin, Phone } from "lucide-react";
+import logo from "@/assets/ugenius_logo.png"
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,11 +11,16 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-gold flex items-center justify-center">
-                <span className="text-primary font-display font-bold text-lg">U</span>
+            <Link to="/">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center">
+                  <img 
+                    src={logo} 
+                    alt="U-Genius Logo" 
+                    className="w-full h-full object-contain rounded-full"
+                  />
+                </div>
               </div>
-              <span className="font-display text-2xl font-semibold">U-Genius</span>
             </Link>
             <p className="text-primary-foreground/80 text-sm leading-relaxed">
               Empowering students to achieve academic excellence through the transformative Auto-Bio Jacking system.

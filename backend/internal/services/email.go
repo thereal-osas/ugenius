@@ -127,11 +127,58 @@ func (s *EmailService) SendAchievementEmail(to, firstName, badgeTitle, badgeDesc
 	return s.SendEmail(to, fmt.Sprintf("Achievement Unlocked: %s", badgeTitle), body)
 }
 
+func (s *EmailService) SendContactEmail(name, email, subject, message string) error {
+	// Create contact email body
+	contactBody := s.buildContactEmailTemplate(name, email, subject, message)
+
+	// Send to admin email
+	return s.SendEmail(s.config.From, fmt.Sprintf("U-Genius Contact: %s", subject), contactBody)
+}
+
 func formatFeedback(feedback string) string {
 	if feedback == "" {
 		return ""
 	}
 	return fmt.Sprintf(`<p><strong>Feedback:</strong> %s</p>`, feedback)
+}
+
+func (s *EmailService) buildContactEmailTemplate(name, email, subject, message string) string {
+	return strings.TrimSpace(fmt.Sprintf(`
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="font-family: 'Inter', Arial, sans-serif; background-color: #f5f5f5; padding: 40px 20px;">
+	<div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+		<div style="background: linear-gradient(135deg, #1a1a2e 0%%, #16213e 100%%); padding: 30px; text-align: center;">
+			<h1 style="color: #D4A574; margin: 0; font-size: 28px;">📧 New Contact Message</h1>
+			<p style="color: #ffffff; margin: 10px 0 0 0;">Someone has contacted you through the U-Genius website</p>
+		</div>
+		<div style="padding: 40px 30px;">
+			<div style="margin-bottom: 25px;">
+				<p style="color: #D4A574; font-weight: bold; margin: 0 0 5px 0;">👤 From:</p>
+				<p style="color: #333; margin: 0; font-size: 16px;">%s (%s)</p>
+			</div>
+			
+			<div style="margin-bottom: 25px;">
+				<p style="color: #D4A574; font-weight: bold; margin: 0 0 5px 0;">📋 Subject:</p>
+				<p style="color: #333; margin: 0; font-size: 16px; background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 4px solid #D4A574;">%s</p>
+			</div>
+			
+			<div style="margin-bottom: 25px;">
+				<p style="color: #D4A574; font-weight: bold; margin: 0 0 5px 0;">💬 Message:</p>
+				<p style="color: #333; margin: 0; font-size: 16px; line-height: 1.6; background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 4px solid #D4A574;">%s</p>
+			</div>
+			
+			<div style="text-align: center; margin-top: 30px;">
+				<a href="mailto:%s" style="background-color: #D4A574; color: #1a1a2e; padding: 12px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Reply to %s</a>
+			</div>
+		</div>
+		<div style="background: #f9f9f9; padding: 20px 30px; text-align: center; border-top: 1px solid #eee;">
+			<p style="color: #888; font-size: 12px; margin: 0;">© 2026 U-Genius. Empowering Academic Excellence.</p>
+		</div>
+	</div>
+</body>
+</html>`, name, email, subject, message, email, name))
 }
 
 func (s *EmailService) buildEmailTemplate(title, content, buttonURL, buttonText, footer string) string {
@@ -170,4 +217,3 @@ func (s *EmailService) buildEmailTemplate(title, content, buttonURL, buttonText,
 </body>
 </html>`, title, content, buttonHTML, footerHTML))
 }
-

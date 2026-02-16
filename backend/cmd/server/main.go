@@ -86,19 +86,12 @@ func main() {
 	// Initialize services
 	emailService := services.NewEmailService(&cfg.SMTP, cfg.Frontend.URL)
 	authService := services.NewAuthService(db, cfg, emailService)
-	readingHoursService := services.NewReadingHoursService(db, emailService)
-	goalsService := services.NewGoalsService(db)
-	achievementsService := services.NewAchievementsService(db, emailService)
 
 	// Initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
+	adminHandler := handlers.NewAdminHandler(db, authService)
+	contactHandler := handlers.NewContactHandler(emailService)
 	campusHandler := handlers.NewCampusHandler(db)
-	readingHoursHandler := handlers.NewReadingHoursHandler(readingHoursService)
-	goalsHandler := handlers.NewGoalsHandler(goalsService)
-	achievementsHandler := handlers.NewAchievementsHandler(achievementsService)
-	notificationsHandler := handlers.NewNotificationsHandler(db)
-	studyGroupsHandler := handlers.NewStudyGroupsHandler(db)
-	scholarshipsHandler := handlers.NewScholarshipsHandler(db)
 	waitlistHandler := handlers.NewWaitlistHandler(db)
 	eventsHandler := handlers.NewEventsHandler(db)
 
@@ -120,6 +113,7 @@ func main() {
 		auth := api.Group("/auth")
 		{
 			auth.POST("/register", authHandler.Register)
+			auth.POST("/register-admin", authHandler.RegisterAdmin)
 			auth.POST("/login", authHandler.Login)
 			auth.POST("/refresh", authHandler.RefreshToken)
 			auth.POST("/verify-email", authHandler.VerifyEmail)
@@ -133,7 +127,10 @@ func main() {
 		api.GET("/campuses/:id", campusHandler.GetByID)
 
 		// Public leaderboard
-		api.GET("/leaderboard", readingHoursHandler.GetLeaderboard)
+		api.GET("/leaderboard", readingHandler.GetLeaderboard)
+
+		// Contact form (public - no auth required)
+		api.POST("/contact", contactHandler.SendContactEmail)
 
 		// Waitlist registration (public - no auth required)
 		api.POST("/waitlist", waitlistHandler.Register)
@@ -157,30 +154,30 @@ func main() {
 			// Reading hours
 			readingHours := protected.Group("/reading-hours")
 			{
-				readingHours.POST("", readingHoursHandler.Create)
-				readingHours.GET("", readingHoursHandler.List)
-				readingHours.GET("/stats", readingHoursHandler.GetStats)
-				readingHours.GET("/:id", readingHoursHandler.GetByID)
-				readingHours.PUT("/:id", readingHoursHandler.Update)
-				readingHours.DELETE("/:id", readingHoursHandler.Delete)
+				readingHours.POST("", readingHandler.Create)
+				readingHours.GET("", readingHandler.List)
+				readingHours.GET("/stats", readingHandler.GetStats)
+				readingHours.GET("/:id", readingHandler.GetByID)
+				readingHours.PUT("/:id", readingHandler.Update)
+				readingHours.DELETE("/:id", readingHandler.Delete)
 			}
 
 			// Goals
 			goals := protected.Group("/goals")
 			{
-				goals.POST("", goalsHandler.Create)
-				goals.GET("", goalsHandler.List)
-				goals.GET("/:id", goalsHandler.GetByID)
-				goals.PUT("/:id", goalsHandler.Update)
-				goals.DELETE("/:id", goalsHandler.Delete)
+				goals.POST("", goalHandler.Create)
+				goals.GET("", goalHandler.List)
+				goals.GET("/:id", goalHandler.GetByID)
+				goals.PUT("/:id", goalHandler.Update)
+				goals.DELETE("/:id", goalHandler.Delete)
 			}
 
 			// Achievements
 			achievements := protected.Group("/achievements")
 			{
-				achievements.GET("", achievementsHandler.List)
-				achievements.GET("/badges", achievementsHandler.GetAllBadges)
-				achievements.POST("/check", achievementsHandler.CheckAchievements)
+				achievements.GET("", achievementHandler.List)
+				achievements.GET("/badges", achievementHandler.GetAllBadges)
+				achievements.POST("/check", achievementHandler.CheckAchievements)
 			}
 
 			// Notifications
@@ -214,13 +211,22 @@ func main() {
 
 			// Admin routes
 			admin := protected.Group("/admin")
-			admin.Use(middleware.RequireAdmin())
+			admin.Use(middleware.RoleMiddleware(models.RoleAdmin))
 			{
-				admin.GET("/reading-hours", readingHoursHandler.AdminList)
-				admin.POST("/reading-hours/:id/review", readingHoursHandler.Review)
-				admin.GET("/stats", readingHoursHandler.GetCampusStats)
+				admin.GET("/dashboard", adminHandler.GetDashboard)
+				admin.POST("/users", adminHandler.CreateAdmin)
+				admin.GET("/users", adminHandler.GetCampusUsers)
 				admin.POST("/campuses", campusHandler.Create)
 				admin.PUT("/campuses/:id", campusHandler.Update)
+				admin.GET("/users", adminHandler.GetCampusUsers)
+
+				// Super admin routes
+				superAdmin := admin.Group("")
+				superAdmin.Use(middleware.RequireSuperAdmin())
+				{
+					superAdmin.POST("/users", adminHandler.CreateAdmin)
+					superAdmin.POST("/users/promote", adminHandler.PromoteUser)
+				}
 			}
 		}
 	}

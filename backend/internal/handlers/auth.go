@@ -31,21 +31,43 @@ func (h *AuthHandler) Register(c *gin.Context) {
 
 	user, err := h.authService.Register(&input)
 	if err != nil {
-		switch err {
-		case services.ErrUserExists:
-			response.Conflict(c, "A user with this email already exists")
-		case services.ErrCampusNotFound:
-			response.BadRequest(c, "Invalid campus selected")
-		default:
-			response.InternalError(c, "Failed to create account")
+		if err == services.ErrUserExists {
+			response.Conflict(c, "User with this email already exists")
+			return
 		}
+		response.InternalError(c, "Failed to register user: "+err.Error())
 		return
 	}
 
-	response.Created(c, "Account created successfully. You can now log in.", gin.H{
-		"user_id": user.ID,
-		"email":   user.Email,
-	})
+	response.Created(c, "User registered successfully", user)
+}
+
+// RegisterAdmin godoc
+// @Summary Register a new admin
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param input body services.RegisterInput true "Admin registration details"
+// @Success 201 {object} response.Response
+// @Router /auth/register-admin [post]
+func (h *AuthHandler) RegisterAdmin(c *gin.Context) {
+	var input services.RegisterInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		response.BadRequest(c, err.Error())
+		return
+	}
+
+	user, err := h.authService.RegisterAdmin(&input)
+	if err != nil {
+		if err == services.ErrUserExists {
+			response.Conflict(c, "User with this email already exists")
+			return
+		}
+		response.InternalError(c, "Failed to register admin: "+err.Error())
+		return
+	}
+
+	response.Created(c, "Admin registered successfully", user)
 }
 
 // Login godoc

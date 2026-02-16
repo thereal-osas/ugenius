@@ -6,7 +6,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, isAdmin?: boolean) => Promise<void>;
   logout: () => Promise<void>;
   register: (data: {
     email: string;
@@ -14,6 +14,7 @@ interface AuthContextType {
     first_name: string;
     last_name: string;
     campus_id?: string;
+    institution?: string;
   }) => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -52,9 +53,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     initAuth();
   }, [refreshUser]);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, isAdmin = false) => {
     const response = await api.login(email, password);
     if (response.data) {
+      const user = response.data.user as User;
+      if (isAdmin) {
+        if (user.role !== 'campus_admin' && user.role !== 'super_admin') {
+          throw new Error('You do not have permission to access admin portal.');
+        }
+      }
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
       await refreshUser();
@@ -79,6 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     first_name: string;
     last_name: string;
     campus_id?: string;
+    institution?: string;
   }) => {
     await api.register(data);
   };

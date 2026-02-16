@@ -16,37 +16,37 @@ const benefits = [
   {
     icon: GraduationCap,
     title: "Scholarship Opportunities",
-    description: "Access exclusive scholarships and financial aid programs available only to U-Genius members. We partner with organizations to provide funding for exceptional students.",
+    description: "Access funding support, academic grants, and exclusive opportunities that reward excellence and reduce financial barriers to educational advancement.",
     highlights: ["Merit-based awards", "Need-based assistance", "Research grants"],
   },
   {
     icon: BookMarked,
-    title: "Premium Study Materials",
-    description: "Get instant access to our comprehensive library of study resources including past exam questions, solved examples, and detailed course notes.",
+    title: "Tutorials & Premium Study Materials",
+    description: "Get structured tutorials, curated resources, and premium study materials designed to simplify learning, improve understanding, and boost academic performance.",
     highlights: ["Past questions bank", "Solved examples", "Course summaries"],
   },
   {
     icon: Users2,
-    title: "Mentorship Program",
-    description: "Connect with successful graduates and senior students who've achieved first-class honors. Receive personalized guidance on your academic journey.",
+    title: "Mentorship Programs",
+    description: "Connect with experienced mentors who provide guidance, accountability, and career insight to help you make informed academic and life decisions.",
     highlights: ["1-on-1 sessions", "Group mentoring", "Career guidance"],
   },
   {
     icon: Lightbulb,
     title: "Skill Development",
-    description: "Develop essential life skills beyond academics. Our workshops cover leadership, time management, public speaking, and more.",
+    description: "Build essential leadership, digital, and technical skills that prepare you for real-world challenges and future career success.",
     highlights: ["Leadership training", "Time management", "Communication skills"],
   },
   {
     icon: Calendar,
     title: "Events & Workshops",
-    description: "Participate in regular seminars, workshops, and academic events designed to enhance your knowledge and networking opportunities.",
+    description: "Participate in impactful events and practical workshops that expand knowledge, encourage networking, and inspire personal and professional growth.",
     highlights: ["Weekly seminars", "Study groups", "Academic conferences"],
   },
   {
     icon: Award,
     title: "Recognition & Awards",
-    description: "Get recognized for your achievements through our member spotlight program, certificates, and annual excellence awards.",
+    description: "Earn recognition for excellence, leadership, and commitment through awards that motivate achievement and celebrate outstanding student contributions.",
     highlights: ["Member spotlight", "Certificates", "Annual awards"],
   },
 ];
@@ -73,7 +73,7 @@ const Benefits = () => {
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 As a U-Genius member, you gain access to a comprehensive suite of resources, 
-                support systems, and opportunities designed to propel you towards academic excellence.
+                support systems, and opportunities designed to propel you towards academic excellence and leadership.
               </p>
             </div>
           </div>

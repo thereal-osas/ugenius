@@ -122,11 +122,6 @@ const EventCard = ({ event }: { event: Event }) => (
         </div>
       </div>
 
-      {/* CTA */}
-      <Button variant="outline" size="sm" className="w-full group/btn">
-        Learn More
-        <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-      </Button>
     </div>
   </div>
 );

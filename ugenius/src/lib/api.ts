@@ -71,6 +71,7 @@ class ApiClient {
     first_name: string;
     last_name: string;
     campus_id?: string;
+    institution?: string;
   }) {
     return this.request('/auth/register', { method: 'POST', body: data });
   }
@@ -99,6 +100,28 @@ class ApiClient {
 
   async updateProfile(data: Partial<User>) {
     return this.request<User>('/me', { method: 'PUT', body: data });
+  }
+
+  // Admin endpoints
+  async getCampusUsers() {
+    return this.request<User[]>('/admin/users');
+  }
+
+  async createAdmin(data: {
+    email: string;
+    first_name: string;
+    last_name: string;
+    password: string;
+    campus_id: string;
+  }) {
+    return this.request<User>('/admin/users', { method: 'POST', body: data });
+  }
+
+  async promoteUser(data: {
+    user_id: string;
+    campus_id: string;
+  }) {
+    return this.request<User>('/admin/users/promote', { method: 'POST', body: data });
   }
 
   // Campus endpoints
@@ -190,10 +213,21 @@ export interface User {
   email: string;
   first_name: string;
   last_name: string;
+  phone?: string;
   avatar_url?: string;
   role: 'student' | 'campus_admin' | 'super_admin';
   campus_id?: string;
-  is_verified: boolean;
+  campus?: {
+    id: string;
+    name: string;
+    code: string;
+  };
+  institution?: string;
+  department?: string;
+  level?: string;
+  email_verified: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Campus {

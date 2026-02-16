@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/ugenius_logo.png"
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -37,12 +38,13 @@ const Navbar = () => {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-full bg-gradient-gold flex items-center justify-center shadow-gold group-hover:scale-110 transition-transform">
-            <span className="text-primary font-display font-bold text-lg">U</span>
+          <div className="flex items-center justify-center group-hover:scale-110 transition-transform">
+            <img 
+              src={logo}
+              alt="U-Genius Logo" 
+              className="w-40 lg:w-48 object-contain rounded-full"
+            />
           </div>
-          <span className="font-display text-2xl font-semibold text-foreground">
-            U-Genius
-          </span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -52,10 +54,12 @@ const Navbar = () => {
               key={link.path}
               to={link.path}
               className={cn(
-                "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300",
+                "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                 location.pathname === link.path
-                  ? "text-gold bg-gold/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "text-foreground bg-muted"
+                  : location.pathname === "/" && !isScrolled
+                    ? "text-white/80 hover:text-white hover:bg-white/5"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
             >
               {link.name}
@@ -98,7 +102,9 @@ const Navbar = () => {
                 "px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300",
                 location.pathname === link.path
                   ? "text-gold bg-gold/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  : location.pathname === "/" && !isScrolled
+                    ? "text-white/80 hover:text-white hover:bg-white/5"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
             >
               {link.name}

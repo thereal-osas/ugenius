@@ -24,7 +24,8 @@ export default function Login() {
         title: 'Welcome back!',
         description: 'You have successfully logged in.',
       });
-      navigate('/dashboard');
+      // Redirect based on user role - dashboard is disabled for now
+      navigate('/');
     } catch (error) {
       toast({
         title: 'Login failed',
@@ -86,6 +87,12 @@ export default function Login() {
               Don't have an account?{' '}
               <Link to="/register" className="text-gold-600 hover:text-gold-700 font-medium">
                 Sign up
+              </Link>
+            </p>
+            <p className="text-gray-600 mt-2">
+              Are you an administrator?{' '}
+              <Link to="/admin/login" className="text-gold-600 hover:text-gold-700 font-medium">
+                Admin Login
               </Link>
             </p>
           </div>

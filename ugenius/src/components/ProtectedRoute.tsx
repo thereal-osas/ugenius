@@ -3,10 +3,10 @@ import { useAuth } from '@/contexts/AuthContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: 'student' | 'campus_admin' | 'super_admin';
+  adminOnly?: boolean;
 }
 
-export default function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, adminOnly = false }: ProtectedRouteProps) {
   const { user, isLoading, isAuthenticated } = useAuth();
   const location = useLocation();
 
@@ -19,18 +19,12 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    const redirectTo = adminOnly ? '/admin/login' : '/login';
+    return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
 
-  if (requiredRole && user?.role !== requiredRole) {
-    // Check if user has higher privileges
-    const roleHierarchy = ['student', 'campus_admin', 'super_admin'];
-    const userRoleIndex = roleHierarchy.indexOf(user?.role || '');
-    const requiredRoleIndex = roleHierarchy.indexOf(requiredRole);
-
-    if (userRoleIndex < requiredRoleIndex) {
-      return <Navigate to="/dashboard" replace />;
-    }
+  if (adminOnly && user?.role !== 'campus_admin' && user?.role !== 'super_admin') {
+    return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;
