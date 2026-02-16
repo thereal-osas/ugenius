@@ -47,8 +47,7 @@ const About = () => {
                   Our Story & Vision
                 </h1>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  U-Genius was born from a simple belief: every student has the potential
-                  for academic excellence when given the right tools, guidance, and community.
+                 UGenius was created out of a deep desire to see students rise beyond limitations and unlock their full academic and leadership potential. What began as a simple initiative to support struggling students has grown into a movement committed to excellence, purpose, and impact.
                 </p>
               </div>
 
@@ -83,18 +82,13 @@ const About = () => {
                 </h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    U-Genius emerged from the transformative teachings of Dr. Isaiah Macwealth 
-                    and his revolutionary Auto-Bio Jacking system. This methodology has helped 
-                    countless students break through academic barriers and achieve excellence.
+                  UGenius was born on campus through firsthand encounters with students facing academic pressure, lack of guidance, and limited access to the right resources. Seeing the gap between potential and performance, UGenius emerged as a structured solution—combining academic support, mentorship, and leadership development into one empowering platform.
                   </p>
                   <p>
-                    Founded by a group of passionate students who experienced firsthand the 
-                    power of these principles, U-Genius became a beacon for those aspiring 
-                    to become first-class graduates.
+                    From these early experiences, we realized that success is not just about intelligence—it is about discipline, consistency, and the right systems. UGenius was created to provide students with the tools, structure, and encouragement they need to study daily, grow holistically, and achieve meaningful results.
                   </p>
                   <p>
-                    Today, we are a thriving community of learners, mentors, and achievers, 
-                    all united by the common goal of academic excellence and personal growth.
+                   Today, UGenius continues to expand, guided by the same vision: to raise a generation of scholars and leaders who are equipped to excel academically and make lasting impact in their communities.
                   </p>
                 </div>
               </div>
@@ -109,26 +103,15 @@ const About = () => {
                 </h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    Auto-Bio Jacking is a unique approach to learning and personal development 
-                    that combines self-discovery, strategic thinking, and proven study techniques.
-                  </p>
-                  <p>
-                    At its core, the system teaches students to:
-                  </p>
-                  <ul className="space-y-3">
-                    {[
-                      "Understand their unique learning patterns",
-                      "Develop effective study strategies",
-                      "Build mental resilience and focus",
-                      "Create sustainable habits for success",
-                      "Connect with mentors and peers for growth",
-                    ].map((item) => (
-                      <li key={item} className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-gold mt-2 shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                    Autobiojacking, also known as ABJ, is the heart of UGenius’ approach to academic success. It is a structured system of discipline designed to ensure that students study consistently every day, turning learning into a daily habit rather than a last-minute effort.</p>
+
+<p>ABJ is more than just a schedule—it is a system of operation that aligns mindset, routine, and accountability. By embedding consistent study habits into students’ daily lives, ABJ helps them retain knowledge better, improve performance, and build the discipline essential for long-term academic achievement.</p>
+
+<p>At UGenius, we believe that consistency is the key to success, and Autobiogaking provides the framework that turns potential into results. Through ABJ, students are empowered to take control of their learning, track progress, and steadily move toward academic excellence</p>
+
+                  
+                 
+                  
                 </div>
               </div>
             </div>
@@ -179,10 +162,7 @@ const About = () => {
                 Building Tomorrow's Leaders
               </h2>
               <p className="text-xl leading-relaxed text-primary-foreground/80">
-                We envision a world where every student has access to the tools, mentorship, 
-                and community they need to achieve academic excellence. Through U-Genius, 
-                we're not just creating first-class graduates—we're nurturing future leaders, 
-                innovators, and changemakers who will transform their communities and beyond.
+                Our vision is to build a global community of purpose-driven students who excel academically, lead boldly, and create lasting impact. We see a generation that is confident in their abilities, disciplined in their habits, and intentional about their growth. Through learning, leadership, and service, we aim to shape individuals who influence their campuses, communities, and the world for good.
               </p>
             </div>
           </div>

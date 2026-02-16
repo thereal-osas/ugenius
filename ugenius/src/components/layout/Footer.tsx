@@ -89,7 +89,7 @@ const Footer = () => {
                   href="mailto:ugeniusclub@gmail.com"
                   className="text-primary-foreground/70 hover:text-gold transition-colors duration-300 text-sm"
                 >
-                  ugeniusclub@gmail.com
+                  ugeniusclublagos@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-3">
