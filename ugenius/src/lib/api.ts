@@ -98,6 +98,10 @@ class ApiClient {
     return this.request<User>('/me');
   }
 
+  async deleteUser(userId: string) {
+    return this.request(`/admin/users/${userId}`, { method: 'DELETE' });
+  }
+
   async updateProfile(data: Partial<User>) {
     return this.request<User>('/me', { method: 'PUT', body: data });
   }

@@ -94,12 +94,16 @@ func main() {
 	campusHandler := handlers.NewCampusHandler(db)
 	waitlistHandler := handlers.NewWaitlistHandler(db)
 	eventsHandler := handlers.NewEventsHandler(db)
+	galleryHandler := handlers.NewGalleryHandler(db)
 
 	// Create router
 	router := gin.New()
 	router.Use(middleware.LoggerMiddleware())
 	router.Use(middleware.RecoveryMiddleware())
 	router.Use(middleware.CORSMiddleware(cfg.CORS.Origins))
+
+	// Serve static files from the "uploads" directory
+	router.Static("/uploads", "./uploads")
 
 	// API routes
 	api := router.Group("/api/v1")
@@ -139,6 +143,9 @@ func main() {
 		api.GET("/events", eventsHandler.List)
 		api.GET("/events/featured", eventsHandler.GetFeatured)
 		api.GET("/events/:id", eventsHandler.GetByID)
+
+		// Public gallery
+		api.GET("/gallery", galleryHandler.GetGallery)
 
 		// Protected routes
 		protected := api.Group("")
@@ -219,6 +226,15 @@ func main() {
 				admin.POST("/campuses", campusHandler.Create)
 				admin.PUT("/campuses/:id", campusHandler.Update)
 				admin.GET("/users", adminHandler.GetCampusUsers)
+
+				// Gallery management (Super Admin only)
+				galleryAdmin := admin.Group("/gallery")
+				galleryAdmin.Use(middleware.RequireSuperAdmin())
+				{
+					galleryAdmin.POST("", galleryHandler.CreateGallery)
+					galleryAdmin.POST("/upload", galleryHandler.UploadGalleryImage)
+					galleryAdmin.DELETE("/:id", galleryHandler.DeleteGallery)
+				}
 
 				// Super admin routes
 				superAdmin := admin.Group("")

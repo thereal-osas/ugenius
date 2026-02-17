@@ -252,3 +252,26 @@ func (s *AuthService) FindUserByEmail(email string) (*models.User, error) {
 	}
 	return &user, nil
 }
+
+func (s *AuthService) GetAllUsers() ([]models.User, error) {
+	var users []models.User
+	if err := s.db.Preload("Campus").Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+func (s *AuthService) DeleteUser(userID string) error {
+	// Prevent deletion of super admin
+	var user models.User
+	if err := s.db.First(&user, "id = ?", userID).Error; err != nil {
+		return err
+	}
+
+	if user.Role == models.RoleSuperAdmin {
+		return errors.New("cannot delete super admin user")
+	}
+
+	// Soft delete the user
+	return s.db.Delete(&models.User{}, "id = ?", userID).Error
+}

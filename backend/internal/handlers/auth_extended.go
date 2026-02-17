@@ -189,3 +189,36 @@ func (h *AuthHandler) ChangePassword(c *gin.Context) {
 	response.Success(c, "Password changed successfully", nil)
 }
 
+// GetUsers godoc
+// @Summary Get all users (admin only)
+// @Tags admin
+// @Security BearerAuth
+// @Success 200 {object} response.Response
+// @Router /admin/users [get]
+func (h *AuthHandler) GetUsers(c *gin.Context) {
+	users, err := h.authService.GetAllUsers()
+	if err != nil {
+		response.InternalError(c, "Failed to fetch users")
+		return
+	}
+
+	response.Success(c, "", users)
+}
+
+// DeleteUser godoc
+// @Summary Delete a user (admin only)
+// @Tags admin
+// @Security BearerAuth
+// @Param id path string true "User ID"
+// @Success 200 {object} response.Response
+// @Router /admin/users/{id} [delete]
+func (h *AuthHandler) DeleteUser(c *gin.Context) {
+	userID := c.Param("id")
+
+	if err := h.authService.DeleteUser(userID); err != nil {
+		response.InternalError(c, "Failed to delete user")
+		return
+	}
+
+	response.Success(c, "User deleted successfully", nil)
+}

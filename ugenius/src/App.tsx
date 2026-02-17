@@ -11,6 +11,7 @@ import About from '@/pages/About'
 import Benefits from '@/pages/Benefits'
 import Resources from '@/pages/Resources'
 import Testimonials from '@/pages/Testimonials'
+import Gallery from '@/pages/Gallery'
 // import Contact from '@/pages/Contact'
 import Join from '@/pages/Join'
 import ThankYou from '@/pages/ThankYou'
@@ -45,6 +46,7 @@ function App() {
         <Route path="/benefits" element={<Benefits />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/testimonials" element={<Testimonials />} />
+        <Route path="/gallery" element={<Gallery />} />
         {/* <Route path="/contact" element={<Contact />} /> */}
         <Route path="/join" element={<Join />} />
         <Route path="/thank-you" element={<ThankYou />} />

@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -14,8 +16,43 @@ import (
 
 func main() {
 	// Load environment variables
-	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found")
+	envLoaded := false
+
+	// Try current directory first
+	if err := godotenv.Load(); err == nil {
+		log.Println("Loaded .env from current directory")
+		envLoaded = true
+	}
+
+	// Try backend/.env (if running from project root)
+	if !envLoaded {
+		if err := godotenv.Load("backend/.env"); err == nil {
+			log.Println("Loaded .env from backend/.env")
+			envLoaded = true
+		}
+	}
+
+	// Try other paths
+	if !envLoaded {
+		if exe, err := os.Executable(); err == nil {
+			dir := filepath.Dir(exe)
+			// Try exe directory
+			if err := godotenv.Load(filepath.Join(dir, ".env")); err == nil {
+				log.Println("Loaded .env from executable directory")
+				envLoaded = true
+			}
+			// Try going up to backend directory
+			if !envLoaded {
+				if err := godotenv.Load(filepath.Join(dir, "../../.env")); err == nil {
+					log.Println("Loaded .env from parent directory")
+					envLoaded = true
+				}
+			}
+		}
+	}
+
+	if !envLoaded {
+		log.Println("No .env file found, using environment variables")
 	}
 
 	// Load configuration
@@ -41,6 +78,7 @@ func main() {
 	// Initialize essential services
 	emailService := services.NewEmailService(&cfg.SMTP, cfg.Frontend.URL)
 	authService := services.NewAuthService(db, cfg, emailService)
+	galleryHandler := handlers.NewGalleryHandler(db)
 
 	// Initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -70,9 +108,38 @@ func main() {
 			auth.POST("/refresh", authHandler.RefreshToken)
 		}
 
+		// Protected routes (require authentication)
+		protected := api.Group("/")
+		protected.Use(middleware.AuthMiddleware(cfg.JWT.Secret))
+		{
+			protected.GET("/me", authHandler.GetMe)
+		}
+
+		// Admin-only routes (require authentication + admin role)
+		admin := api.Group("/admin")
+		admin.Use(middleware.AuthMiddleware(cfg.JWT.Secret))
+		admin.Use(middleware.RequireAdmin())
+		{
+			admin.GET("/users", authHandler.GetUsers)
+			admin.DELETE("/users/:id", authHandler.DeleteUser)
+			admin.POST("/gallery/upload", galleryHandler.UploadGalleryImage)
+			admin.POST("/gallery", galleryHandler.CreateGallery)
+			admin.DELETE("/gallery/:id", galleryHandler.DeleteGallery)
+		}
+
 		// Public campus list
 		api.GET("/campuses", campusHandler.List)
 		api.GET("/campuses/:id", campusHandler.GetByID)
+
+		// Public gallery
+		api.GET("/gallery", galleryHandler.GetGallery)
+
+		// Serve static files (uploads) - specific route for gallery images
+		router.GET("/uploads/gallery/:filename", func(c *gin.Context) {
+			filename := c.Param("filename")
+			filePath := "C:/Users/USER/Desktop/u-genius/backend/uploads/gallery/" + filename
+			c.File(filePath)
+		})
 
 		// Contact form (public - no auth required)
 		api.POST("/contact", contactHandler.SendContactEmail)

@@ -79,6 +79,9 @@ func Migrate(db *gorm.DB) error {
 		// Events
 		&models.Event{},
 		&models.EventRegistration{},
+
+		// Gallery
+		&models.Gallery{},
 	)
 	if err != nil {
 		return fmt.Errorf("failed to run migrations: %w", err)

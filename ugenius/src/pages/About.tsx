@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Target, Eye, Heart, Zap } from "lucide-react";
+import prophet from "@/assets/prophet.jpeg"
 
 const values = [
   {
@@ -147,6 +148,72 @@ const About = () => {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Founder Section */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-12">
+                <span className="text-gold font-medium text-sm uppercase tracking-wider">
+                  Meet Our Founder
+                </span>
+                <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-4 mb-6">
+                  The Visionary Behind U-Genius
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                  A visionary Christian leader, mentor, author, and transformational education advocate.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="order-2 lg:order-1">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="font-display text-2xl font-bold text-foreground mb-4">
+                        Dr. Isaiah Macwealth
+                      </h3>
+                      <p className="text-gold font-medium mb-4">
+                        Founder
+                      </p>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <p className="text-muted-foreground leading-relaxed">
+                        Dr. Isaiah Macwealth is a Christian leader, author, and philanthropist with a strong passion for spiritual growth and societal transformation. As Senior Pastor of Gospel Pillars International Churches and founder of OneSound Revival Fellowship, he has established platforms that promote faith, leadership development, education, and humanitarian outreach. His work spans media, ministerial training, and charitable initiatives that impact lives across nations.
+                      </p>
+                      
+                      <p className="text-muted-foreground leading-relaxed">
+                        In 2023, he launched the Ark of Light for All Nations in Lagos, a vibrant worship and community hub that also houses the Ark Food Bank, providing practical support through food and emergency assistance programs. His leadership reflects a commitment not only to spiritual teaching but also to community empowerment and structured development.
+                      </p>
+                      
+                      <p className="text-muted-foreground leading-relaxed">
+                        As Founder of the U-Genius Club, Dr. Macwealth brings this same vision into the academic space, championing excellence, character formation, and intellectual growth. His passion is to raise disciplined, purpose-driven young leaders equipped to make meaningful contributions to their communities and the world.
+                      </p>
+                    </div>
+                    
+                   
+                  </div>
+                </div>
+                
+                <div className="order-1 lg:order-2">
+                  <div className="relative">
+                    <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-gold/20 to-coral/20">
+                      <img 
+                        src={prophet}
+                        alt="Dr. Isaiah Macwealth - Founder of U-Genius"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    {/* Decorative elements */}
+                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-gold/10 rounded-full blur-xl" />
+                    <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-coral/10 rounded-full blur-xl" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
