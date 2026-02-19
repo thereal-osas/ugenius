@@ -1,20 +1,12 @@
-import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { Mail, MapPin, Phone, Send, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1";
 
 const faqs = [
   {
@@ -23,7 +15,7 @@ const faqs = [
   },
   {
     question: "Is there a membership fee?",
-    answer: "Basic membership is free! However, we offer premium tiers with additional benefits such as one-on-one mentorship and exclusive resources for a nominal fee.",
+    answer: "Membership is free! We offer premium benefits such as tutorials, one-on-one mentorship, skill-building initiatives, and exclusive resources for a no cost.",
   },
   {
     question: "What is Auto-Bio Jacking?",
@@ -40,61 +32,6 @@ const faqs = [
 ];
 
 const Contact = () => {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      // Send to your Go backend
-      const response = await fetch(`${API_URL}/contact`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-        }),
-      });
-
-      if (response.ok) {
-        toast({
-          title: "Message Sent!",
-          description: "We'll get back to you as soon as possible.",
-        });
-        setFormData({ name: "", email: "", subject: "", message: "" });
-      } else {
-        throw new Error("Failed to send message");
-      }
-    } catch {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -107,7 +44,7 @@ const Contact = () => {
           </div>
 
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="max-w-4xl mx-auto text-center">
               <span className="text-gold font-medium text-sm uppercase tracking-wider">
                 Get in Touch
               </span>
@@ -116,162 +53,86 @@ const Contact = () => {
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Have questions about U-Genius? We'd love to hear from you. 
-                Send us a message and we'll respond as soon as possible.
+                Reach out to us through any of the channels below and we'll respond as soon as possible.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Contact Section */}
+        {/* Contact Information Section */}
         <section className="py-24 bg-background">
           <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                {/* Contact Info */}
-                <div>
-                  <h2 className="font-display text-3xl font-bold text-foreground mb-8">
-                    Reach Out to Us
-                  </h2>
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="font-display text-4xl font-bold text-foreground mb-6">
+                  Reach Out to Us
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  We're here to help you on your academic journey. Connect with us through any of these channels.
+                </p>
+              </div>
 
-                  <div className="space-y-6 mb-12">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center shrink-0">
-                        <MapPin className="w-6 h-6 text-gold" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground mb-1">Location</h3>
-                        <p className="text-muted-foreground">
-                          Student Center, Main Campus<br />
-                          University Avenue
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center shrink-0">
-                        <Mail className="w-6 h-6 text-gold" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                        <a href="mailto:info@ugenius.club" className="text-muted-foreground hover:text-gold transition-colors">
-                          info@ugenius.club
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center shrink-0">
-                        <Phone className="w-6 h-6 text-gold" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground mb-1">Phone</h3>
-                        <a href="tel:+1234567890" className="text-muted-foreground hover:text-gold transition-colors">
-                          +123 456 7890
-                        </a>
-                      </div>
-                    </div>
+              {/* Contact Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                {/* Location Card */}
+                {/* <div className="text-center group">
+                  <div className="w-20 h-20 rounded-2xl bg-gold/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-gold/20 transition-colors">
+                    <MapPin className="w-10 h-10 text-gold" />
                   </div>
+                  <h3 className="font-semibold text-foreground text-xl mb-3">Location</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Student Center, Main Campus<br />
+                    University Avenue
+                  </p>
+                </div> */}
 
-                  {/* Social Links */}
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-4">Follow Us</h3>
-                    <div className="flex gap-3">
-                      {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                        <a
-                          key={i}
-                          href="#"
-                          className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-primary transition-all duration-300"
-                        >
-                          <Icon size={20} />
-                        </a>
-                      ))}
-                    </div>
+                {/* Email Card */}
+                <div className="text-center group">
+                  <div className="w-20 h-20 rounded-2xl bg-gold/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-gold/20 transition-colors">
+                    <Mail className="w-10 h-10 text-gold" />
                   </div>
+                  <h3 className="font-semibold text-foreground text-xl mb-3">Email</h3>
+                  <a 
+                    href="mailto:ugeniusclublagos@gmail.com" 
+                    className="text-muted-foreground hover:text-gold transition-colors text-lg leading-relaxed"
+                  >
+                    ugeniusclublagos@gmail.com
+                  </a>
                 </div>
 
-                {/* Contact Form */}
-                <div className="bg-card rounded-3xl p-8 md:p-10 shadow-soft">
-                  <h2 className="font-display text-2xl font-semibold text-foreground mb-6">
-                    Send a Message
-                  </h2>
-
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Your Name</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        placeholder="John Doe"
-                        className="bg-background"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email Address</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="john@example.com"
-                        className="bg-background"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="subject">Subject</Label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        required
-                        placeholder="How can we help?"
-                        className="bg-background"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="message">Message</Label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                        placeholder="Tell us more about your inquiry..."
-                        rows={5}
-                        className="bg-background resize-none"
-                      />
-                    </div>
-
-                    <Button
-                      type="submit"
-                      variant="hero"
-                      size="xl"
-                      className="w-full"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <span className="flex items-center gap-2">
-                          <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                          Sending...
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-2">
-                          <Send className="w-5 h-5" />
-                          Send Message
-                        </span>
-                      )}
-                    </Button>
-                  </form>
+                {/* Phone Card */}
+                <div className="text-center group">
+                  <div className="w-20 h-20 rounded-2xl bg-gold/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-gold/20 transition-colors">
+                    <Phone className="w-10 h-10 text-gold" />
+                  </div>
+                  <h3 className="font-semibold text-foreground text-xl mb-3">Phone</h3>
+                  <a 
+                    href="tel:+2347062557356" 
+                    className="text-muted-foreground hover:text-gold transition-colors text-lg leading-relaxed"
+                  >
+                    +234 706 255 7356
+                  </a>
                 </div>
               </div>
+
+              {/* Social Media Section */}
+              {/* <div className="text-center">
+                <h3 className="font-semibold text-foreground text-xl mb-6">Follow Us</h3>
+                <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+                  Stay connected with our community for updates, events, and inspiring content.
+                </p>
+                <div className="flex justify-center gap-4">
+                  {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
+                    <a
+                      key={i}
+                      href="#"
+                      className="w-14 h-14 rounded-2xl bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-primary transition-all duration-300"
+                    >
+                      <Icon size={24} />
+                    </a>
+                  ))}
+                </div>
+              </div> */}
             </div>
           </div>
         </section>

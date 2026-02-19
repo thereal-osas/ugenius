@@ -1,7 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Target, Eye, Heart, Zap } from "lucide-react";
-import prophet from "@/assets/prophet.jpeg"
+import prophet from "@/assets/prophet2new.jpg"
 
 const values = [
   {

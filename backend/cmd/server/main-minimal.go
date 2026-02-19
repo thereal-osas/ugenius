@@ -70,6 +70,14 @@ func main() {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
 
+	// Seed initial data
+	if err := database.SeedCampuses(db); err != nil {
+		log.Printf("Warning: Failed to seed campuses: %v", err)
+	}
+	if err := database.SeedEvents(db); err != nil {
+		log.Printf("Warning: Failed to seed events: %v", err)
+	}
+
 	// Set Gin mode
 	if cfg.Server.Env == "production" {
 		gin.SetMode(gin.ReleaseMode)

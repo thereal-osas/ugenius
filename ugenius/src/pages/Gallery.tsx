@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Image as ImageIcon } from "lucide-react";
+import { Image as ImageIcon, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface GalleryItem {
@@ -17,6 +17,8 @@ const Gallery = () => {
   const { user, isAuthenticated } = useAuth();
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const isAdmin = isAuthenticated && user?.role === 'super_admin';
 
@@ -40,6 +42,50 @@ const Gallery = () => {
     }
   };
 
+  const openModal = (item: GalleryItem, index: number) => {
+    setSelectedImage(item);
+    setCurrentIndex(index);
+  };
+
+  const closeModal = useCallback(() => {
+    setSelectedImage(null);
+  }, []);
+
+  const navigatePrevious = useCallback(() => {
+    const newIndex = currentIndex === 0 ? galleryItems.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+    setSelectedImage(galleryItems[newIndex]);
+  }, [currentIndex, galleryItems]);
+
+  const navigateNext = useCallback(() => {
+    const newIndex = currentIndex === galleryItems.length - 1 ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+    setSelectedImage(galleryItems[newIndex]);
+  }, [currentIndex, galleryItems]);
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (!selectedImage) return;
+      
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft') navigatePrevious();
+      if (e.key === 'ArrowRight') navigateNext();
+    };
+    
+    if (selectedImage) {
+      document.addEventListener('keydown', handleGlobalKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.removeEventListener('keydown', handleGlobalKeyDown);
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleGlobalKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedImage, currentIndex, closeModal, navigatePrevious, navigateNext]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -61,14 +107,18 @@ const Gallery = () => {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {galleryItems.map((item) => (
-            <Card key={item.id} className="group overflow-hidden hover:shadow-lg transition-shadow duration-300">
+          {galleryItems.map((item, index) => (
+            <Card 
+              key={item.id} 
+              className="group overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+              onClick={() => openModal(item, index)}
+            >
               <CardContent className="p-0">
                 <div className="relative">
                   <img
                     src={`${import.meta.env.VITE_API_URL.replace('/api/v1', '')}${item.image_url}`}
                     alt={item.title}
-                    className="w-full h-64 object-cover"
+                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                     onError={() => {
                       console.error("Image failed to load:", {
                         fullUrl: `${import.meta.env.VITE_API_URL.replace('/api/v1', '')}${item.image_url}`,
@@ -80,6 +130,13 @@ const Gallery = () => {
                       console.log("Image loaded successfully:", `${import.meta.env.VITE_API_URL.replace('/api/v1', '')}${item.image_url}`);
                     }}
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="bg-white/90 rounded-full p-2">
+                        <ImageIcon className="w-6 h-6 text-gray-800" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 
                 <div className="p-4">
@@ -114,6 +171,71 @@ const Gallery = () => {
       </main>
 
       <Footer />
+
+      {/* Image Modal/Lightbox */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          onClick={closeModal}
+        >
+          <div 
+            className="relative max-w-6xl max-h-full w-full h-full flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 z-10 bg-white/10 hover:bg-white/20 text-white rounded-full p-2 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Previous Button */}
+            {galleryItems.length > 1 && (
+              <button
+                onClick={navigatePrevious}
+                className="absolute left-4 z-10 bg-white/10 hover:bg-white/20 text-white rounded-full p-2 transition-colors"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            )}
+
+            {/* Next Button */}
+            {galleryItems.length > 1 && (
+              <button
+                onClick={navigateNext}
+                className="absolute right-4 z-10 bg-white/10 hover:bg-white/20 text-white rounded-full p-2 transition-colors"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            )}
+
+            {/* Image */}
+            <img
+              src={`${import.meta.env.VITE_API_URL.replace('/api/v1', '')}${selectedImage.image_url}`}
+              alt={selectedImage.title}
+              className="max-w-full max-h-full object-contain"
+            />
+
+            {/* Image Info */}
+            {selectedImage.title && (
+              <div className="absolute bottom-4 left-4 right-4 text-center">
+                <h3 className="text-white text-lg font-semibold">{selectedImage.title}</h3>
+                {selectedImage.caption && (
+                  <p className="text-white/80 text-sm mt-1">{selectedImage.caption}</p>
+                )}
+              </div>
+            )}
+
+            {/* Image Counter */}
+            {galleryItems.length > 1 && (
+              <div className="absolute top-4 left-4 text-white/80 text-sm">
+                {currentIndex + 1} / {galleryItems.length}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

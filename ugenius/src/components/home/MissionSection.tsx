@@ -40,7 +40,7 @@ const MissionSection = () => {
               Our <span className="text-gradient-gold">Mission</span>
             </h2>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Maintaing academic excellence, inspiring leadership
+              Maintaining Academic Excellence, Inspiring Leadership
             </p>
           </div>
         </ScrollReveal>
@@ -65,7 +65,7 @@ const MissionSection = () => {
           <div className="lg:pl-16">
       
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              We exist to raise a generation of scholars who not only succeed in the classroom, but also lead with character, vision, and impact. Our gial is to shape well-rounded individuals who are academically strong, emotionally grounded, and purpose-driven, prepared to stand out in any environment they find themselves. <br/><br/> Through tutorials, mentorship, community, and skill building initiatives, we equip students to think critically, grow confidently and influence their world positively.
+              We exist to raise a generation of scholars who not only succeed in the classroom, but also lead with character, vision, and impact. Our goal is to shape well-rounded individuals who are academically strong, emotionally grounded, and purpose-driven, prepared to stand out in any environment they find themselves in. <br/><br/> Through tutorials, mentorship, community, and skill-building initiatives, we equip students to think critically, grow confidently, and influence their world positively.
             </p>
           </div>
         </div>

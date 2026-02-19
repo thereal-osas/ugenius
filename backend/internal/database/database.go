@@ -113,13 +113,30 @@ func SeedCampuses(db *gorm.DB) error {
 		{Name: "Federal University of Technology Minna", Code: "FUTMINNA", Location: "Minna", State: "Niger", Country: "Nigeria", IsActive: true},
 		{Name: "Federal University of Technology Owerri", Code: "FUTO", Location: "Owerri", State: "Imo", Country: "Nigeria", IsActive: true},
 		{Name: "University of Abuja", Code: "UNIABUJA", Location: "Abuja", State: "FCT", Country: "Nigeria", IsActive: true},
+		{Name: "University of Calabar", Code: "UNICAL", Location: "Calabar", State: "Cross River", Country: "Nigeria", IsActive: true},
+		{Name: "University of Uyo", Code: "UNIUYO", Location: "Uyo", State: "Akwa Ibom", Country: "Nigeria", IsActive: true},
+		{Name: "Federal University of Agriculture, Abeokuta", Code: "FUNAAB", Location: "Abeokuta", State: "Ogun", Country: "Nigeria", IsActive: true},
+		
 		// State Universities
 		{Name: "Olabisi Onabanjo University", Code: "OOU", Location: "Ago-Iwoye", State: "Ogun", Country: "Nigeria", IsActive: true},
 		{Name: "Lagos State University", Code: "LASU", Location: "Ojo", State: "Lagos", Country: "Nigeria", IsActive: true},
 		{Name: "Ambrose Alli University", Code: "AAU", Location: "Ekpoma", State: "Edo", Country: "Nigeria", IsActive: true},
 		{Name: "Delta State University", Code: "DELSU", Location: "Abraka", State: "Delta", Country: "Nigeria", IsActive: true},
-		// Private University
+		{Name: "Rivers State University", Code: "RSU", Location: "Port Harcourt", State: "Rivers", Country: "Nigeria", IsActive: true},
+		{Name: "Benue State University, Makurdi", Code: "BSU", Location: "Makurdi", State: "Benue", Country: "Nigeria", IsActive: true},
+		{Name: "Ignatius Ajuru University of Education", Code: "IAUE", Location: "Port Harcourt", State: "Rivers", Country: "Nigeria", IsActive: true},
+		{Name: "Southern Delta University, Ozoro", Code: "SDU", Location: "Ozoro", State: "Delta", Country: "Nigeria", IsActive: true},
+		
+		// Private Universities
 		{Name: "Igbinedion University", Code: "IUO", Location: "Okada", State: "Edo", Country: "Nigeria", IsActive: true},
+		{Name: "Novena Private University", Code: "NPU", Location: "Ogume", State: "Delta", Country: "Nigeria", IsActive: true},
+		{Name: "Ambrose Ali College of Medicine, Ekpoma", Code: "AACME", Location: "Ekpoma", State: "Edo", Country: "Nigeria", IsActive: true},
+		
+		// International Universities
+		{Name: "University of Texas Arlington", Code: "UTA", Location: "Arlington, Texas", State: "Texas", Country: "USA", IsActive: true},
+		{Name: "Tarrant Community College - Southeast", Code: "TCCSE", Location: "Arlington, Texas", State: "Texas", Country: "USA", IsActive: true},
+		{Name: "Tarrant Community College Trinity River", Code: "TCCTR", Location: "Fort Worth, Texas", State: "Texas", Country: "USA", IsActive: true},
+		
 		// Polytechnics and Colleges
 		{Name: "Yaba College of Technology", Code: "YABATECH", Location: "Yaba", State: "Lagos", Country: "Nigeria", IsActive: true},
 		{Name: "Federal Polytechnic Auchi", Code: "AUCHIPOLY", Location: "Auchi", State: "Edo", Country: "Nigeria", IsActive: true},
